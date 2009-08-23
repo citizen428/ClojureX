@@ -1,0 +1,23 @@
+#!/bin/sh
+# Michael Kohl <http://citizen428.net>
+# 2009-08-23
+DIR=`pwd`
+echo "Configuring Emacs (appending to ~/.emacs)"
+echo ";; clojure-mode
+(add-to-list 'load-path \"$DIR/clojure-mode\")
+(require 'clojure-mode)
+;; swank-clojure
+(add-to-list 'load-path \"$DIR/swank-clojure\")
+(require 'swank-clojure-autoload)
+(swank-clojure-config
+(setq swank-clojure-jar-path \"$DIR/clojure/clojure.jar\")
+(setq swank-clojure-extra-classpaths
+(list \"$DIR/clojure-contrib/clojure-contrib.jar\")))
+;; slime
+(eval-after-load \"slime\"
+'(progn (slime-setup '(slime-repl))))
+
+(add-to-list 'load-path \"$DIR/slime\")
+(require 'slime)
+(slime-setup)">>~/.emacs
+echo "Done."

@@ -10,3 +10,12 @@
 [submodule "Clojure.tmbundle"]
 	path = Clojure.tmbundle
 	url = git://github.com/stephenroller/clojure-tmbundle.git
+[submodule "clojure-mode"]
+	path = clojure-mode
+	url = git://github.com/jochu/clojure-mode.git
+[submodule "slime"]
+	path = slime
+	url = git://git.boinkor.net/slime.git
+[submodule "swank-clojure"]
+	path = swank-clojure
+	url = git://github.com/jochu/swank-clojure.git

@@ -1,0 +1,12 @@
+#!/bin/sh
+# Michael Kohl <http://citizen428.net>
+# 2009-08-23
+DIR=`pwd`
+echo "Creating symlink /usr/local/bin/clj..."
+if [ -f /usr/local/bin/clj ]; then
+  echo "Symlink already exists, doing nothing!"
+else
+  sudo ln -s $DIR/clj /usr/local/bin/clj
+  echo "Done."
+fi
+
