@@ -76,8 +76,8 @@ If there were any updates to clojure, clojure-contrib or jline you will have to 
 Acknowledgements
 ----------------
 
-* Carl Leiby (http://www.carlism.org/) for creating the Clojure-MacOSX  project (http://github.com/carlism/Clojure-MacOSX/) which is the base for ClojureX
+* [Carl Leiby](http://www.carlism.org/) for creating the [Clojure-MacOSX  project](http://github.com/carlism/Clojure-MacOSX/) which is the base for ClojureX
 
-* Mark Reid (http://mark.reid.name/) on which Carl's work was based
+* [Mark Reid](http://mark.reid.name/) on which Carl's work was based
 
-* Tim Riddel (http://riddell.us/blog/) from whom I stole the contents of the .emacs file)
+* [Tim Riddel](http://riddell.us/blog/) from whom I stole the contents of the .emacs file
