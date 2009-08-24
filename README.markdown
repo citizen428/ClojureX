@@ -1,27 +1,38 @@
-Clojure Mac OS X Setup
-======================
+ClojureX
+========
 
-My set up for Clojure on Mac OS X Leopard.
+Easy set up for Clojure on Mac OS X Leopard.
 
 Set Up Instructions
 -------------------
 
-	$ git clone git://github.com/carlism/Clojure-MacOSX.git Clojure
-	$ cd Clojure
+	$ git clone git://github.com/citizen428/ClojureX.git clojure
+	$ cd clojure
 
-Grab the dependancies (Clojure, Clojure-contrib, jline):
+Grab all packages (clojure, clojure-contrib, jline and TextMate/Emacs support):
 
 	$ git submodule init
 	$ git submodule update
 
-Build the dependancies:
+Build the packages:
 	
 	$ ant
 
-Make the `clj` script executable and link to it from somewhere in your `$PATH`. (I use `~/bin` and have added it to my `$PATH` in my `~/.bash_profile`):
+To create a symlink for the `clj` script in `/usr/local/bin` you can run the following command:
 
-	$ chmod u+x clj
-	$ ln -s <Full path to wherever you put this project>/clj ~/bin/clj
+    $ ./create_symlink
+
+If you prefer to create the link somewhere else, you can do it manually like this:
+
+	$ ln -s <full path to this project>/clj <destination path>/clj
+	
+To setup support for TextMate, run the following command which creates a symlink to the bundle in `~/Library/Application\ Support/TextMate/Bundles/`:
+
+    $ ./configure_textmate
+  
+If you prefer Emacs for Clojure development the following command will add the necessary configuration for clojure-mode, slime and swank-clojure to your `~/.emacs`:
+
+    $ ./configure_emacs
 
 Usage
 -----
@@ -32,7 +43,7 @@ The `clj` command can be used to open an interactive session:
 	Clojure
 	user=> 
 
-or it can be used to run a script:
+It can be used to run a script:
 
 	$ clj test.clj 
 	Hello, Clojure!
@@ -43,9 +54,30 @@ or it can be used to make a script file executable by starting your file with th
 
 then chmod u+x your file and run it.
 	
-To add extra jar files to the Clojure's classpath on a project-by-prject basis, just create a `.clojure` file in the project's directory with the text to add to the classpath. 
+To add extra jar files to Clojure's classpath on a project-by-prject basis, just create a `.clojure` file in the project's directory. Here's an example: 
 
-For example, in my `~/code/clojure/cafe` project directory, I can add the Grinder and Frother jars from the `~/code/clojure/cafe/lib` directory by putting their relative paths, separated by a colon, into a `.clojure` file:
+If your project direectory is `~/code/clojure/cafe`, you can add the Grinder and Frother jars from the `~/code/clojure/cafe/lib` directory by putting their relative paths, separated by a colon, into the `.clojure` file:
 
 	$ cd ~/code/clojure/cafe
 	$ echo "lib/grinder.jar:lib/frother.jar" > .clojure
+
+Staying up to date
+------------------
+
+To keep your Clojure installation current, you can update all packages like this:
+
+    $ cd clojure
+    $ git submodules update
+
+If there were any updates to clojure, clojure-contrib or jline you will have to rebuild them:
+
+    $ ant
+
+Acknowledgements
+----------------
+
+* Carl Leiby (http://www.carlism.org/) for creating the Clojure-MacOSX  project (http://github.com/carlism/Clojure-MacOSX/) which is the base for ClojureX
+
+* Mark Reid (http://mark.reid.name/) on which Carl's work was based
+
+* Tim Riddel (http://riddell.us/blog/) from whom I stole the contents of the .emacs file)
