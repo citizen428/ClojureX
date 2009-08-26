@@ -64,12 +64,13 @@ If your project direectory is `~/code/clojure/cafe`, you can add the Grinder and
 Staying up to date
 ------------------
 
-To keep your Clojure installation current, you can update all packages like this:
+Once you have a local checkout of ClojureX, it's easy to keep your Clojure installation up to date:
 
     $ cd clojure
-    $ git submodules update
+    $ cd <submodule you want to update>
+    $ git pull origin master
 
-If there were any updates to clojure, clojure-contrib or jline you will have to rebuild them:
+If there were any updates to clojure, clojure-contrib or jline you will have to rebuild them like this:
 
     $ ant
 
