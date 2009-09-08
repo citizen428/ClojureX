@@ -69,6 +69,10 @@ Once you have a local checkout of ClojureX, it's easy to keep your Clojure insta
     $ cd clojure
     $ cd <submodule you want to update>
     $ git pull origin master
+    
+To update the source for all submodules at the same time, you can issue the following command:
+
+    $ ./update_all
 
 If there were any updates to clojure, clojure-contrib or jline you will have to rebuild them like this:
 

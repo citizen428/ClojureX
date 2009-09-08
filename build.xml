@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Clojure-OSX" default="all" basedir=".">
+<project name="ClojureX" default="all" basedir=".">
 
 	
     <target name="clojure">

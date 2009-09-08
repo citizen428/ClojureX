@@ -1,0 +1,12 @@
+#!/bin/sh
+# Michael Kohl <http://citizen428.net>
+# 2009-08-23
+DIRS=`find . -maxdepth 1 -type d -name '[!.]*'`
+
+for d in $DIRS 
+do 
+	cd $d
+	git pull origin master
+	cd .. 
+done
+
