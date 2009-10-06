@@ -1,7 +1,7 @@
 ClojureX
 ========
 
-Easy set up for Clojure on Mac OS X Leopard.
+Easy set up for Clojure on Mac OS X (Snow) Leopard. Of course there's no real reason why this shouldn't work on any other Unix, but I only test it on my MacBook. 
 
 Set Up Instructions
 -------------------
@@ -77,6 +77,11 @@ To update the source for all submodules at the same time, you can issue the foll
 If there were any updates to clojure, clojure-contrib or jline you will have to rebuild them like this:
 
     $ ant
+
+Todo
+----
+
+* Add scripts to work with Clojure projects after installation
 
 Acknowledgements
 ----------------
