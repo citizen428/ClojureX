@@ -53,6 +53,10 @@ or it can be used to make a script file executable by starting your file with th
 	#!/usr/bin/env clj
 
 then chmod u+x your file and run it.
+
+You can also open a debug port like this:
+
+    # clj -d 1234 test.clj
 	
 To add extra jar files to Clojure's classpath on a project-by-prject basis, just create a `.clojure` file in the project's directory. Here's an example: 
 
