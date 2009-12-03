@@ -3,7 +3,7 @@ ClojureX
 
 Easy set up for Clojure on Mac OS X (Snow) Leopard.
 
-*NEW*: Experimental support for Cygwin.  See note.
+*NEW*: Experimental support for Cygwin. (It *should* "just work.")
 
 Set Up Instructions
 -------------------
@@ -36,12 +36,8 @@ If you prefer Emacs for Clojure development the following command will add the n
 
     $ ./configure_emacs
 
-Cygwin Users: Additional Instructions
--------------------------------------
-
-Edit `clj` to point to your java binary.  If JAVA_HOME is set, you can use the following:
-
-        JAVA=`cygpath -d "$JAVA_HOME"`/bin/java
+`clj` expects `$JAVA_HOME` in its environment.
+If for some reason you do not want to provide this variable, you can set the `$JAVA` variable on line 7.
 
 Usage
 -----
