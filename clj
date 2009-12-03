@@ -10,7 +10,14 @@ USAGE="Usage: clj [-d debug-port] filename.clj"
 
 # Attempt to find java automatically
 if [ -z "$JAVA" ]; then
-  if [ ! -z "$JAVA_HOME" ]; then
+  # Attempt to find a suitable JAVA_HOME if we don't have one
+  if [ -z "$JAVA_HOME" ]; then
+    if [ -f /usr/libexec/java_home ]; then # OS X 10.5+
+      JAVA_HOME=`/usr/libexec/java_home`
+    fi
+  fi
+  
+  if [ ! -z "$JAVA_HOME" ]; then # Found a JAVA_HOME, find java
     if $cygwin; then
       JAVA_HOME=`cygpath "$JAVA_HOME"`
     fi
