@@ -6,7 +6,7 @@
 # CREATED: 2009-03-29
 JAVA=
 XDEBUG=-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=
-USAGE="Usage: clj [-d debug-port] flename.clj"
+USAGE="Usage: clj [-d debug-port] filename.clj"
 
 # Attempt to find java automatically
 if [ -z "$JAVA" ]; then
@@ -19,35 +19,36 @@ if [ -z "$JAVA" ]; then
 fi
 
 if [ -z "$JAVA" ] || [ ! -f "$JAVA" ]; then # Couldn't find java
-  echo "Can't find java. Check \$JAVA_HOME or set \$JAVA on line 7."
+  echo "Could not find java. Check \$JAVA_HOME or set \$JAVA on line 7."
   exit 1
 fi
 
 # Handle switches
 while getopts "hd:" opt; do
-    case $opt in
-	d) DEBUGPORT=$OPTARG;;
-	h) echo $USAGE
-	    exit 1;;
-        \?) echo $USAGE
-	    exit 1;;
-        *) echo $USAGE
-	    exit 1;;
-    esac
+  case $opt in
+    d) DEBUGPORT=$OPTARG;;
+    h) echo $USAGE
+      exit 1;;
+    \?) echo $USAGE
+      exit 1;;
+    *) echo $USAGE
+      exit 1;;
+  esac
 done
 shift $(($OPTIND - 1))
 
 # resolve links - $0 may be a softlink
 PRG="$0"
 while [ -h "$PRG" ]; do
-    ls=`ls -ld "$PRG"`
-    link=`expr "$ls" : '.*-> \(.*\)$'`
-    if expr "$link" : '/.*' > /dev/null; then
-	PRG="$link"
-    else
-	PRG=`dirname "$PRG"`/"$link"
-    fi
+  ls=`ls -ld "$PRG"`
+  link=`expr "$ls" : '.*-> \(.*\)$'`
+  if expr "$link" : '/.*' > /dev/null; then
+    PRG="$link"
+  else
+    PRG=`dirname "$PRG"`/"$link"
+  fi
 done
+
 CLJ_DIR=`dirname "$PRG"`
 CLOJURE=$CLJ_DIR/clojure/clojure.jar
 CONTRIB=$CLJ_DIR/clojure-contrib/clojure-contrib.jar
@@ -57,24 +58,35 @@ CP=$PWD:$CLOJURE:$JLINE:$CONTRIB
 # Add extra jars as specified by `.clojure` file
 if [ -f .clojure ]
 then
-    CP=$CP:`cat .clojure`
+  CP=$CP:`cat .clojure`
 fi
 
 ARGS="-server"
 
 # Add debug switch
 if [[ "$DEBUGPORT" =~ ^[0-9]+$ ]]; then
-    ARGS="$ARGS -Xdebug $XDEBUG$DEBUGPORT"
+  ARGS="$ARGS -Xdebug $XDEBUG$DEBUGPORT"
 fi
 
+# Cygwin-ify classpath
 if $cygwin; then
-    CP=`cygpath -wp "$CP"`                           # Cygwin-ify classpath
-    REPL_FLAGS="-Djline.terminal=jline.UnixTerminal" # Hack to (sorta) make REPL work
+  CP=`cygpath -wp "$CP"`
 fi
 
 if [ -z "$1" ]; then
-    "$JAVA" $ARGS -cp "$CP" $REPL_FLAGS jline.ConsoleRunner clojure.lang.Repl
+  # Make jline and Cygwin cooperate with each other
+  if $cygwin; then
+    stty -icanon min 1 -echo
+    REPL_FLAGS="-Djline.terminal=jline.UnixTerminal"
+  fi
+
+  "$JAVA" $ARGS -cp "$CP" $REPL_FLAGS jline.ConsoleRunner clojure.lang.Repl
+
+  # Restore Cygwin TTY settings
+    if $cygwin; then
+    stty icanon echo
+  fi
 else
-    scriptname=$1
-    "$JAVA" $ARGS -cp "$CP" clojure.lang.Script $scriptname -- $*
+  scriptname=$1
+  "$JAVA" $ARGS -cp "$CP" clojure.lang.Script $scriptname -- $*
 fi
