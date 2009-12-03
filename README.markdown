@@ -41,7 +41,7 @@ Cygwin Users: Additional Instructions
 
 Edit `clj` to point to your java binary.  If JAVA_HOME is set, you can use the following:
 
-  JAVA=`cygpath -d "$JAVA_HOME"`/bin/java
+  ``JAVA=`cygpath -d "$JAVA_HOME"`/bin/java``
 
 Usage
 -----
