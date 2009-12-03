@@ -45,6 +45,11 @@ then
     CP=$CP:`cat .clojure`
 fi
 
+if $cygwin; then
+    CP=`cygpath -wp "$CP"`                      # Cygwin-ify classpath
+    FLAGS="-Djline.terminal=jline.UnixTerminal" # Hack to (sorta) make REPL work
+fi
+
 COMMAND="$JAVA -server"
 
 # Add debug switch
