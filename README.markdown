@@ -1,7 +1,9 @@
 ClojureX
 ========
 
-Easy set up for Clojure on Mac OS X (Snow) Leopard. Of course there's no real reason why this shouldn't work on any other Unix, but I only test it on my MacBook. 
+Easy set up for Clojure on Mac OS X (Snow) Leopard.
+
+*NEW*: Experimental support for Cygwin.  See note.
 
 Set Up Instructions
 -------------------
@@ -33,6 +35,13 @@ To setup support for TextMate, run the following command which creates a symlink
 If you prefer Emacs for Clojure development the following command will add the necessary configuration for clojure-mode, slime and swank-clojure to your `~/.emacs`:
 
     $ ./configure_emacs
+
+Cygwin Users: Additional Instructions
+-------------------------------------
+
+Edit `clj` to point to your java binary.  If JAVA_HOME is set, you can use the following:
+
+  JAVA=`cygpath -d "$JAVA_HOME"`/bin/java
 
 Usage
 -----
