@@ -4,9 +4,24 @@
 #
 # Mark Reid <http://mark.reid.name>
 # CREATED: 2009-03-29
-JAVA=/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java 
+JAVA=
 XDEBUG=-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=
 USAGE="Usage: clj [-d debug-port] flename.clj"
+
+# Attempt to find java automatically
+if [ -z "$JAVA" ]; then
+  if [ ! -z "$JAVA_HOME" ]; then
+    if $cygwin; then
+      JAVA_HOME=`cygpath "$JAVA_HOME"`
+    fi
+    JAVA="$JAVA_HOME/bin/java"
+  fi
+fi
+
+if [ -z "$JAVA" ] || [ ! -f "$JAVA" ]; then # Couldn't find java
+  echo "Can't find java. Check \$JAVA_HOME or set \$JAVA on line 7."
+  exit 1
+fi
 
 # Handle switches
 while getopts "hd:" opt; do
@@ -45,21 +60,21 @@ then
     CP=$CP:`cat .clojure`
 fi
 
-if $cygwin; then
-    CP=`cygpath -wp "$CP"`                      # Cygwin-ify classpath
-    FLAGS="-Djline.terminal=jline.UnixTerminal" # Hack to (sorta) make REPL work
-fi
-
-COMMAND="$JAVA -server"
+ARGS="-server"
 
 # Add debug switch
 if [[ "$DEBUGPORT" =~ ^[0-9]+$ ]]; then
-    COMMAND="$COMMAND -Xdebug $XDEBUG$DEBUGPORT"
+    ARGS="$ARGS -Xdebug $XDEBUG$DEBUGPORT"
 fi
- 
-if [ -z "$1" ]; then 
-    $COMMAND -cp "$CP" jline.ConsoleRunner clojure.lang.Repl    
+
+if $cygwin; then
+    CP=`cygpath -wp "$CP"`                           # Cygwin-ify classpath
+    REPL_FLAGS="-Djline.terminal=jline.UnixTerminal" # Hack to (sorta) make REPL work
+fi
+
+if [ -z "$1" ]; then
+    "$JAVA" $ARGS -cp "$CP" $REPL_FLAGS jline.ConsoleRunner clojure.lang.Repl
 else
     scriptname=$1
-    $COMMAND -cp "$CP" clojure.lang.Script $scriptname -- $*
+    "$JAVA" $ARGS -cp "$CP" clojure.lang.Script $scriptname -- $*
 fi
