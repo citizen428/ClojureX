@@ -17,7 +17,7 @@ while getopts "hd:" opt; do
         \?) echo $USAGE
 	    exit 1;;
         *) echo $USAGE
-	    eixt 1;;
+	    exit 1;;
     esac
 done
 shift $(($OPTIND - 1))
