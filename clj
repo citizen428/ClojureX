@@ -8,6 +8,12 @@ JAVA=
 XDEBUG=-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=
 USAGE="Usage: clj [-d debug-port] filename.clj"
 
+# Detect environments (just Cygwin for now)
+cygwin=false
+case "`uname`" in
+  CYGWIN*) cygwin=true;;
+esac
+
 # Attempt to find java automatically
 if [ -z "$JAVA" ]; then
   # Attempt to find a suitable JAVA_HOME if we don't have one
