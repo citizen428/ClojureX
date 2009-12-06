@@ -23,7 +23,7 @@ if [ -z "$JAVA" ]; then
     fi
   fi
   
-  if [ ! -z "$JAVA_HOME" ]; then # Found a JAVA_HOME, find java
+  if [ -n "$JAVA_HOME" ]; then # Found a JAVA_HOME, find java
     if $cygwin; then
       JAVA_HOME=`cygpath "$JAVA_HOME"`
     fi
@@ -89,16 +89,12 @@ fi
 if [ -z "$1" ]; then
   # Make jline and Cygwin cooperate with each other
   if $cygwin; then
+    trap "stty `stty -g` >/dev/null" EXIT # Restore TTY settings on exit
     stty -icanon min 1 -echo
     REPL_FLAGS="-Djline.terminal=jline.UnixTerminal"
   fi
 
   "$JAVA" $ARGS -cp "$CP" $REPL_FLAGS jline.ConsoleRunner clojure.lang.Repl
-
-  # Restore Cygwin TTY settings
-    if $cygwin; then
-    stty icanon echo
-  fi
 else
   scriptname=$1
   "$JAVA" $ARGS -cp "$CP" clojure.lang.Script $scriptname -- $*
