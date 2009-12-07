@@ -1,9 +1,13 @@
 ClojureX
 ========
 
-Easy set up for Clojure on Mac OS X (Snow) Leopard.
+Easy set up for Clojure.
 
-*NEW*: Experimental support for Cygwin. (It *should* "just work.")
+**Supported Platforms**
+
+  - Linux (tested on Ubuntu 9.10)
+  - Mac OS X 10.5+
+  - Windows (Cygwin)
 
 Set Up Instructions
 -------------------
@@ -38,7 +42,7 @@ If you prefer Emacs for Clojure development the following command will add the n
 
 The `clj` script expects `$JAVA_HOME` in its environment.
 If `$JAVA_HOME` is not set, it will attempt to determine it for you.
-Currently, automatic detection works on OS X 10.5+ only.
+Currently, automatic detection works on Mac OS X 10.5+ only.
 If for some reason you cannot provide `$JAVA_HOME`, you can set the `$JAVA` variable on line 7 of the `clj` script.
 
 Usage
