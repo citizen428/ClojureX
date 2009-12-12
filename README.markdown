@@ -40,11 +40,6 @@ If you prefer Emacs for Clojure development the following command will add the n
 
     $ ./configure_emacs
 
-The `clj` script expects `$JAVA_HOME` in its environment.
-If `$JAVA_HOME` is not set, it will attempt to determine it for you.
-Currently, automatic detection works on Mac OS X 10.5+ only.
-If for some reason you cannot provide `$JAVA_HOME`, you can set the `$JAVA` variable on line 7 of the `clj` script.
-
 Usage
 -----
 
@@ -69,9 +64,14 @@ You can also open a debug port like this:
 
     # clj -d 1234 test.clj
 	
-To add extra jar files to Clojure's classpath on a project-by-prject basis, just create a `.clojure` file in the project's directory. Here's an example: 
+Note: The `clj` script expects `$JAVA_HOME` in its environment. If `$JAVA_HOME` is not set, it will attempt to determine it for you. Currently, automatic detection works on Mac OS X 10.5+ only. If for some reason you cannot provide `$JAVA_HOME`, you can set the `$JAVA` variable at the top of the `clj` script.
 
-If your project direectory is `~/code/clojure/cafe`, you can add the Grinder and Frother jars from the `~/code/clojure/cafe/lib` directory by putting their relative paths, separated by a colon, into the `.clojure` file:
+Working with Clojure
+--------------------
+
+To add extra jar files to Clojure's classpath on a project-by-project basis, just create a `.clojure` file in the project's directory. Here's an example: 
+
+If your project directory is `~/code/clojure/cafe`, you can add the Grinder and Frother jars from the `~/code/clojure/cafe/lib` directory by putting their relative paths, separated by a colon, into the `.clojure` file:
 
 	$ cd ~/code/clojure/cafe
 	$ echo "lib/grinder.jar:lib/frother.jar" > .clojure

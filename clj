@@ -2,7 +2,7 @@
 # Runs Clojure using the classpath specified in the `.clojure` file of the
 # current directory.
 #
-# Mark Reid <http://mark.reid.name>
+# Original version by Mark Reid <http://mark.reid.name>
 # CREATED: 2009-03-29
 JAVA=
 XDEBUG=-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=
@@ -32,7 +32,7 @@ if [ -z "$JAVA" ]; then
 fi
 
 if [ -z "$JAVA" ] || [ ! -f "$JAVA" ]; then # Couldn't find java
-  echo "Could not find java. Check \$JAVA_HOME or set \$JAVA on line 7."
+  echo "Could not find Java. Check \$JAVA_HOME or set \$JAVA in this script."
   exit 1
 fi
 
