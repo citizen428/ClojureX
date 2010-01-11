@@ -1,5 +1,6 @@
+#!/usr/bin/env clj
 (println "Hello, Clojure!")
 ;; print out any command line arguments
 (doall
-  (map #(println (str "Arg #" (first %) ": " (last %)))
-    (map vector (iterate inc 1) *command-line-args*)))
+  (map #(println (str "Arg #" %1 ": " %2))
+        (iterate inc 1) *command-line-args*))
