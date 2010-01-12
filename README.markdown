@@ -20,7 +20,7 @@ Grab all packages (clojure, clojure-contrib, jline and TextMate/Emacs support):
     $ git submodule init
     $ git submodule update
 
-Build the packages with [ant][http://ant.apache.org/]:
+Build the packages with [ant][]:
 
     $ ant
 
@@ -64,7 +64,7 @@ Any options following the script will be passed as arguments to the script:
     Arg #2: b
     Arg #3: c d
 
-Use a [shebang line](http://en.wikipedia.org/wiki/Shebang_(Unix)) at the start of your script to make a Clojure file executable:
+Use a [shebang line][shebang] at the start of your script to make a Clojure file executable:
 
     #!/usr/bin/env clj
 
@@ -153,3 +153,6 @@ Acknowledgements
 * [Mark Reid](http://mark.reid.name/) on which Carl's work was based
 
 * [Tim Riddel](http://riddell.us/blog/) from whom I stole the contents of the .emacs file
+
+[shebang]:  http://en.wikipedia.org/wiki/Shebang_(Unix)
+[ant]:      http://ant.apache.org/
