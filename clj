@@ -9,14 +9,17 @@ XDEBUG=-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=
 PRG_NAME=`basename $0`
 USAGE="Usage: $PRG_NAME [java-opt*] [init-opt*] [main-opt] [arg*]"
 
+# determine if $1 is an available program (eschew 'which', as it's unreliable)
 avail() {
   type -P $1 $>/dev/null
 }
 
+# send the stock usage text to stderr
 usage() {
   echo $USAGE >&2
 }
 
+# show the provided error message, the usage information, a friendly tip for more info, and exit
 error() {
   if [[ -n "$1" ]]; then
     echo $1 >&2
@@ -28,7 +31,9 @@ error() {
 }
 
 help() {
+  # spit out the standard usage text
   usage
+  # generate clojure's own help text, stripping off the usage and adding a 'java options' section prior to init options
   java -cp "$CP" clojure.main --help 2>&1 | grep -v "^Usage" | sed 's/init options:/java options:\
     -<javaopt>        Configure JVM (see `java -help` for full list)\
     -d, --debug port  Open a port for debugging\
@@ -37,12 +42,14 @@ help() {
   exit 1
 }
 
+# $1 is the argument name, and $2 is the number of arguments left.
 arg_check() {
   if [[ $2 -lt 2 ]]; then
     error "$PRG_NAME: option requires an argument -- $1"
   fi
 }
 
+# set REPL (if it isn't already set) to the best available repl type: rlwrap if it's in the path, otherwise jline
 default_repl() {
   if [[ "" == "$REPL" ]]; then
     if avail rlwrap; then
@@ -90,7 +97,7 @@ if [ -z "$JAVA" ]; then
       JAVA_HOME=`/usr/libexec/java_home`
     fi
   fi
-  
+
   if [ -n "$JAVA_HOME" ]; then # Found a JAVA_HOME, find java
     if $cygwin; then
       JAVA_HOME=`cygpath "$JAVA_HOME"`
