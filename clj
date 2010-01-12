@@ -7,23 +7,74 @@
 JAVA=
 XDEBUG=-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=
 PRG_NAME=`basename $0`
-USAGE="Usage: $PRG_NAME [JAVAOPTS] [-e code] [-i filename.clj] [-d debug-port] [filename.clj args...]"
+USAGE="Usage: $PRG_NAME [java-opt*] [init-opt*] [main-opt] [arg*]"
 
 avail() {
   type -P $1 $>/dev/null
 }
 
 usage() {
-  echo $USAGE
+  echo $USAGE >&2
+}
+
+error() {
+  if [[ -n "$1" ]]; then
+    echo $1 >&2
+  fi
+  usage
+  echo >&2
+  echo "Try '$PRG_NAME --help' for more options." >&2
+  exit 1
+}
+
+help() {
+  usage
+  java -cp "$CP" clojure.main --help 2>&1 | grep -v "^Usage" | sed 's/init options:/java options:\
+    -<javaopt>        Configure JVM (see `java -help` for full list)\
+    -d, --debug port  Open a port for debugging\
+\
+  init options:/' >&2
+  exit 1
 }
 
 arg_check() {
   if [[ $2 -lt 2 ]]; then
-    echo "$PRG_NAME: option requires an argument -- $1" >&2
-    usage
-    exit 1
+    error "$PRG_NAME: option requires an argument -- $1"
   fi
 }
+
+default_repl() {
+  if [[ "" == "$REPL" ]]; then
+    if avail rlwrap; then
+      REPL="rlwrap"
+    else
+      REPL="jline"
+    fi
+  fi
+}
+
+# resolve links - $0 may be a softlink
+PRG="$0"
+while [ -h "$PRG" ]; do
+  # if readlink is availble, use it; it is less fragile than relying on `ls` output
+  if avail readlink; then
+    PRG=`readlink "$PRG"`
+  else
+    ls=`ls -ld "$PRG"`
+    link=`expr "$ls" : '.*-> \(.*\)$'`
+    if expr "$link" : '/.*' > /dev/null; then
+      PRG="$link"
+    else
+      PRG=`dirname "$PRG"`/"$link"
+    fi
+  fi
+done
+
+CLJ_DIR=`dirname "$PRG"`
+CLOJURE=$CLJ_DIR/clojure/clojure.jar
+CONTRIB=$CLJ_DIR/clojure-contrib/clojure-contrib.jar
+JLINE=$CLJ_DIR/jline/jline.jar
+CP=$PWD:$CLOJURE:$CONTRIB
 
 # Detect environments (just Cygwin for now)
 cygwin=false
@@ -52,23 +103,23 @@ if [ -z "$JAVA" ]; then
 fi
 
 if [ -z "$JAVA" ] || [ ! -f "$JAVA" ]; then # Couldn't find java
-  echo "Could not find Java. Check \$JAVA_HOME or set \$JAVA in this script."
-  exit 1
+  error "Could not find Java. Check \$JAVA_HOME or set \$JAVA in this script."
 fi
 
-JAVA_ARGS="-server"
-CLJ_ARGS=""
-FILE_ARGS=""
+JAVA_VM=""
+JAVA_OPTS=""
+INIT_OPTS=""
+MAIN_OPTS=""
+REPL="" # set this if we know for sure we want a REPL
 
 while [ $# -gt 0 ] ; do
-  if [ -n "$FILE_ARGS" ]; then
-    # if we've started capturing FILE_ARGS, then all remaining options are part of FILE_ARGS
-    FILE_ARGS="$FILE_ARGS $(printf "%q" "$1")"
+  if [ -n "$MAIN_OPTS" ]; then
+    # if we've started capturing MAIN_OPTS, then all remaining arguments are part of MAIN_OPTS
+    MAIN_OPTS="$MAIN_OPTS $(printf "%q" "$1")"
   else
     case "$1" in
     -h|--help|-\?)
-      usage
-      exit 1
+      help
       ;;
     -cp|-classpath)
       # make sure there's a second argument
@@ -78,65 +129,70 @@ while [ $# -gt 0 ] ; do
       # a separate shift for the second argument
       shift
       ;;
-    -d)
+    -d|--debug)
       # make sure there's a second argument
       arg_check $1 $#
       # Add debug switch
       if [[ "$2" =~ ^[0-9]+$ ]]; then
-        JAVA_ARGS="$JAVA_ARGS -Xdebug $XDEBUG$2"
+        JAVA_OPTS="$JAVA_OPTS -Xdebug $XDEBUG$2"
       else
-        echo "$PRG_NAME: debug port must be an integer -- $2"
-        usage
-        exit 1
+        error "$PRG_NAME: debug port must be an integer -- $2"
       fi
       shift
+      ;;
+    -r|--repl)
+      MAIN_OPTS="$MAIN_OPTS $1"
+      default_repl
+      ;;
+    -R)
+      # explcitly choose a REPL -- used for testing
+      arg_check $1 $#
+      case "$2" in
+        clj|jline|rlwrap )  ;;
+        *)                  error "$PRG_NAME: Unknown REPL -- $REPL" ;;
+      esac
+      MAIN_OPTS="$MAIN_OPTS -r"
+      REPL="$2"
+      shift
+      ;;
+    -)
+      MAIN_OPTS="$MAIN_OPTS $1"
       ;;
     -e|--eval|-i|--init) # CLJ arguments
       # make sure there's a second argument
       arg_check $1 $#
       # use printf to preserve existing quotes on the command line correctly
-      CLJ_ARGS="$CLJ_ARGS $1 $(printf "%q" "$2")"
+      INIT_OPTS="$INIT_OPTS $1 $(printf "%q" "$2")"
       shift
       ;;
     -server)
-      # ignore. -server is set by default.
+      if [[ "$JAVA_VM" == "-client" ]]; then
+        error "Cannot specify both -server and -client VMs"
+      fi
+      # redundant, but doesn't hurt any
+      JAVA_VM="-server"
+      ;;
+    -client|-jvm|-hotspot)
+      if [[ "$JAVA_VM" == "-server" ]]; then
+        error "Cannot specify both -server and -client VMs"
+      fi
+      JAVA_VM="-client"
       ;;
     -*)
-      # assume any other switches are java switches
-      JAVA_ARGS="$JAVA_ARGS $1"
+      # assume any other options are java options
+      JAVA_OPTS="$JAVA_OPTS $1"
       ;;
     *)
-      # not a switch. must be a file for clojure to process.
-      FILE_ARGS="$(printf "%q" "$1")"
+      # not a switch. must be the path for clojure to process.
+      MAIN_OPTS="$(printf "%q" "$1")"
       ;;
     esac
   fi
   shift
 done
 
-
-# resolve links - $0 may be a softlink
-PRG="$0"
-while [ -h "$PRG" ]; do
-  # if readlink is availble, use it; it is less fragile than relying on `ls` output
-  if avail readlink; then
-    PRG=`readlink "$PRG"`
-  else
-    ls=`ls -ld "$PRG"`
-    link=`expr "$ls" : '.*-> \(.*\)$'`
-    if expr "$link" : '/.*' > /dev/null; then
-      PRG="$link"
-    else
-      PRG=`dirname "$PRG"`/"$link"
-    fi
-  fi
-done
-
-CLJ_DIR=`dirname "$PRG"`
-CLOJURE=$CLJ_DIR/clojure/clojure.jar
-CONTRIB=$CLJ_DIR/clojure-contrib/clojure-contrib.jar
-JLINE=$CLJ_DIR/jline/jline.jar
-CP=$PWD:$CLOJURE:$CONTRIB
+# specify the java VM to use, defaulting to -server if not specified
+JAVA_OPTS="$JAVA_OPTS ${JAVA_VM:--server}"
 
 # Add extra jars as specified by `.clojure` file
 if [ -f .clojure ]
@@ -150,15 +206,14 @@ then
 fi
 
 # determine if we should fire up the REPL, and if so, which kind
-REPL=""
-# if there are closure arguments or a file to process, then no need for a REPL
-if [ -z "$CLJ_ARGS" -a -z "$FILE_ARGS" ]; then
-  if avail rlwrap; then
-    REPL="rlwrap"
-  else
-    REPL="jline"
-    CP="$CP:$JLINE"
-  fi
+# if there are init or main options, then no need to choose a REPL
+if [ -z "$INIT_OPTS" -a -z "$MAIN_OPTS" ]; then
+  default_repl
+fi
+
+# add jline jars if we're using jline for our REPL
+if [[ "$REPL" == "jline" ]]; then
+  CP="$CP:$JLINE"
 fi
 
 # Cygwin-ify classpath
@@ -177,19 +232,19 @@ rlwrap )
     CLJ_COMP="$CLJ_DIR/clojure-completions"
   fi
 
-  eval rlwrap --remember -c -b "$(printf "%q" "$BREAK_CHARS")" -f "$CLJ_COMP" java $JAVA_ARGS -cp "$CP" clojure.main
+  eval rlwrap --remember -c -b "$(printf "%q" "$BREAK_CHARS")" -f "$CLJ_COMP" java $JAVA_OPTS -cp "$CP" clojure.main $INIT_OPTS $MAIN_OPTS
   ;;
 jline )
   # Make jline and Cygwin cooperate with each other
   if $cygwin; then
     trap "stty `stty -g` >/dev/null" EXIT # Restore TTY settings on exit
     stty -icanon min 1 -echo
-    JAVA_ARGS="$JAVA_ARGS -Djline.terminal=jline.UnixTerminal"
+    JAVA_OPTS="$JAVA_OPTS -Djline.terminal=jline.UnixTerminal"
   fi
 
-  eval java $JAVA_ARGS -cp "$CP" jline.ConsoleRunner clojure.main
+  eval java $JAVA_OPTS -cp "$CP" jline.ConsoleRunner clojure.main $INIT_OPTS $MAIN_OPTS
   ;;
 *)
-  eval java $JAVA_ARGS -cp "$CP" clojure.main $CLJ_ARGS $FILE_ARGS
+  eval java $JAVA_OPTS -cp "$CP" clojure.main $INIT_OPTS $MAIN_OPTS
   ;;
 esac
