@@ -5,9 +5,9 @@ Easy set up for Clojure.
 
 **Supported Platforms**
 
-    - Linux (tested on Ubuntu 9.10)
-    - Mac OS X 10.5+
-    - Windows (Cygwin)
+- Linux (tested on Ubuntu 9.10)
+- Mac OS X 10.5+
+- Windows (Cygwin)
 
 Set Up Instructions
 -------------------
@@ -20,7 +20,7 @@ Grab all packages (clojure, clojure-contrib, jline and TextMate/Emacs support):
     $ git submodule init
     $ git submodule update
 
-Build the packages:
+Build the packages with [ant][http://ant.apache.org/]:
 
     $ ant
 
@@ -48,7 +48,7 @@ Usage
 The `clj` command can be used to open an interactive session:
 
     $ clj
-    Clojure
+    Clojure 1.1.0-master-SNAPSHOT
     user=>
 
 It can be used to run a script:
@@ -58,17 +58,17 @@ It can be used to run a script:
 
 Any options following the script will be passed as arguments to the script:
 
-    $ clj test.clj 1 2 "3 4"
+    $ clj test.clj a b "c d"
     Hello, Clojure!
-    Arg #1: 1
-    Arg #2: 2
-    Arg #3: 3 4
+    Arg #1: a
+    Arg #2: b
+    Arg #3: c d
 
-Use a [shebang line][http://en.wikipedia.org/wiki/Shebang_(Unix)] at the start of your script to make a Clojure file executable:
+Use a [shebang line](http://en.wikipedia.org/wiki/Shebang_(Unix)) at the start of your script to make a Clojure file executable:
 
     #!/usr/bin/env clj
 
-Of course, you'll also need to enable the execute mode (e.g., `chmod u+x <scriptname>`) to run it this way.
+Of course, you'll also need to enable the script's execute mode (e.g., `chmod u+x <scriptname>`) to run it this way.
 
 You can also open a debug port using the `-d` or `--debug` options:
 
