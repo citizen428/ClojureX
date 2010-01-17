@@ -101,6 +101,10 @@ Todo
 Acknowledgements
 ----------------
 
+* [Paul Rosania](http://github.com/paulrosania) for adding Cygwin support
+
+* [Dave Barker](http://github.com/kzar) for adding debugging support (-d)
+
 * [Carl Leiby](http://www.carlism.org/) for creating the [Clojure-MacOSX  project](http://github.com/carlism/Clojure-MacOSX/) which is the base for ClojureX
 
 * [Mark Reid](http://mark.reid.name/) on which Carl's work was based
