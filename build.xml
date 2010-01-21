@@ -1,50 +1,49 @@
 <?xml version="1.0"?>
 <project name="ClojureX" default="all" basedir=".">
 
-	
-    <target name="clojure">
-        <ant dir="clojure" inheritall="false" target="clojure"/>
-    </target>
+  <target name="clojure">
+    <ant dir="clojure" inheritall="false" target="clojure"/>
+  </target>
 
-    <target name="clojure-contrib" depends="clojure">
-        <ant dir="clojure-contrib" inheritall="false" target="jar">
-			<property name="clojure.jar" value="../clojure/clojure.jar"/>
-		</ant>
-    </target>
+  <target name="clojure-contrib" depends="clojure">
+    <ant dir="clojure-contrib" inheritall="false" target="jar">
+      <property name="clojure.jar" value="../clojure/clojure.jar"/>
+    </ant>
+  </target>
 
-	<target name="jline">
-		<mkdir dir="jline/classes"/>
-		<javac
-            srcdir="jline/src/main/java"
-            destdir="jline/classes">
-            <compilerarg value="-Xlint"/>
-        </javac>
-        <jar jarfile="jline/jline.jar" basedir="jline/classes">
-            <fileset dir="jline">
-                <include name="LICENSE.txt"/>
-                <include name="pom.xml"/>
-            </fileset>
-            <fileset dir="jline/src/main/resources">
-				<include name="**/*.properties"/>
-			</fileset>
-        </jar>
-	</target>
+  <target name="jline">
+    <mkdir dir="jline/classes"/>
+    <javac
+      srcdir="jline/src/main/java"
+      destdir="jline/classes">
+      <compilerarg value="-Xlint"/>
+    </javac>
+    <jar jarfile="jline/jline.jar" basedir="jline/classes">
+      <fileset dir="jline">
+	<include name="LICENSE.txt"/>
+	<include name="pom.xml"/>
+      </fileset>
+      <fileset dir="jline/src/main/resources">
+	<include name="**/*.properties"/>
+      </fileset>
+    </jar>
+  </target>
 
-	<target name="tmbundle" depends="clojure, clojure-contrib, jline">
-		<copy todir="Clojure.tmbundle/Vendor" overwrite="true">
-			<fileset dir="clojure" includes="clojure.jar"/>
-			<fileset dir="clojure-contrib" includes="clojure-contrib.jar"/>
-			<fileset dir="jline" includes="jline.jar"/>
-		</copy>
-	</target>
-	
-	<target name="all" depends="clojure, clojure-contrib, jline, tmbundle"/>
-	
-	<target name="clean">
-		<ant dir="clojure" inheritall="false" target="clean"/>
-		<ant dir="clojure-contrib" inheritall="false" target="clean"/>
-		<delete dir="jline/classes"/>
-		<delete file="jline/jline.jar"/>
-	</target>       
-	
+  <target name="tmbundle" depends="clojure, clojure-contrib, jline">
+    <copy todir="Clojure.tmbundle/Vendor" overwrite="true">
+      <fileset dir="clojure" includes="clojure.jar"/>
+      <fileset dir="clojure-contrib" includes="clojure-contrib.jar"/>
+      <fileset dir="jline" includes="jline.jar"/>
+    </copy>
+  </target>
+
+  <target name="all" depends="clojure, clojure-contrib, jline, tmbundle"/>
+
+  <target name="clean">
+    <ant dir="clojure" inheritall="false" target="clean"/>
+    <ant dir="clojure-contrib" inheritall="false" target="clean"/>
+    <delete dir="jline/classes"/>
+    <delete file="jline/jline.jar"/>
+  </target>       
+
 </project>
