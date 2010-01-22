@@ -5,8 +5,9 @@ Easy set up for Clojure.
 
 **Supported Platforms**
 
-- Linux (tested on Ubuntu 9.10)
 - Mac OS X 10.5+
+- OpenSolaris
+- Linux (tested on Ubuntu 9.10)
 - Windows (Cygwin)
 
 Set Up Instructions
