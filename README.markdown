@@ -25,6 +25,11 @@ Build the packages with [ant][]:
 
     $ ant
 
+If want to build the JAR for swank-clojure for use in your own projects, you can do it like this:
+
+    $ cd swank-clojure
+    $ mvn jar:jar
+
 To create a symlink for the `clj` script in `/usr/local/bin` you can run the following command:
 
     $ ./create_symlink
