@@ -25,7 +25,7 @@ Build the packages with [ant][]:
 
     $ ant
 
-If want to build the JAR for swank-clojure for use in your own projects, you can do it like this:
+If you want to build the JAR for swank-clojure for use in your own projects, you can do it like this:
 
     $ cd swank-clojure
     $ mvn jar:jar
