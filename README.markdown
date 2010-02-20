@@ -1,3 +1,7 @@
+IMPORTANT
+=========
+Right now ClojureX is quite broken, since we are having trouble keeping up with upstream changes. We are aware of these problems and hopefully will be able to fix them in the not too distant future. If you are willing to volunteer some of your time to help with this, please drop me a message!
+
 ClojureX
 ========
 
