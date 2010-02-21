@@ -10,21 +10,15 @@ Easy set up for Clojure on unixoid operating systems.
 - Linux (tested on Ubuntu 9.10)
 - Windows (Cygwin)
 
+**Note**
+
+For a while ClojureX tried to be everything for all people: it downloaded clojure, clojure-contrib and support packages for various editors, compiled and configured them. I now decided to give up on this one-size-fits-all approach and instead focus on always providing the latest stable versions of clojure and clojure-contrib as well as a full-featured "clj" script. 
+
 Set Up Instructions
 -------------------
 
     $ git clone git://github.com/citizen428/ClojureX.git 
     $ cd ClojureX
-
-Grab emacs support packages (optional):
-
-    $ git submodule init
-    $ git submodule update
-
-If you want to build the JAR for swank-clojure for use in your own projects, you can do it like this:
-
-    $ cd swank-clojure
-    $ mvn jar:jar
 
 To create a symlink for the `clj` script in `/usr/local/bin` you can run the following command:
 
@@ -35,10 +29,6 @@ If you prefer to create the link somewhere else, you can do it manually like thi
     $ ln -s <full path to this project>/clj <destination path>/clj
 
 Note: The `clj` script expects `$JAVA_HOME` in its environment. If `$JAVA_HOME` is not set, it will attempt to determine it for you. If for some reason you cannot provide `$JAVA_HOME`, you can set the `$JAVA` variable at the top of the `clj` script.
-
-If you checked out the relevant Emacs packages, the following command will add the necessary configuration for clojure-mode, slime and swank-clojure to your `~/.emacs`:
-
-    $ ./configure_emacs
 
 Usage
 -----
@@ -120,19 +110,6 @@ You can also list jars one per line in the .clojure file, like so:
 
     $ cd ~/code/clojure/cafe
     $ ls -1 lib/*.jar > .clojure
-
-Staying up to date
-------------------
-
-Once you have a local checkout of ClojureX, it's easy to keep the provided submodules up to date:
-
-    $ cd clojure
-    $ cd <submodule you want to update>
-    $ git pull origin master
-
-To update the source for all submodules at the same time, you can issue the following command:
-
-    $ ./update_all
 
 Todo
 ----
