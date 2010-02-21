@@ -78,9 +78,9 @@ while [ -h "$PRG" ]; do
 done
 
 CLJ_DIR=`dirname "$PRG"`
-CLOJURE=$CLJ_DIR/clojure/clojure.jar
-CONTRIB=$CLJ_DIR/clojure-contrib/clojure-contrib.jar
-JLINE=$CLJ_DIR/jline/jline.jar
+CLOJURE=$CLJ_DIR/lib/clojure.jar
+CONTRIB=$CLJ_DIR/lib/clojure-contrib.jar
+JLINE=$CLJ_DIR/lib/jline.jar
 CP=$PWD:$CLOJURE:$CONTRIB
 
 # Detect environments (just Cygwin for now)

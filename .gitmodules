@@ -1,15 +1,3 @@
-[submodule "clojure"]
-	path = clojure
-	url = git://github.com/richhickey/clojure.git
-[submodule "clojure-contrib"]
-	path = clojure-contrib
-	url = git://github.com/richhickey/clojure-contrib.git
-[submodule "jline"]
-	path = jline
-	url = git://github.com/rickyclarkson/jline.git
-[submodule "Clojure.tmbundle"]
-	path = Clojure.tmbundle
-	url = git://github.com/kek/clojure-tmbundle.git
 [submodule "clojure-mode"]
 	path = clojure-mode
 	url = git://github.com/jochu/clojure-mode.git

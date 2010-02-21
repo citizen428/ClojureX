@@ -10,9 +10,9 @@ echo ";; clojure-mode
 (add-to-list 'load-path \"$DIR/swank-clojure/src/emacs\")
 (require 'swank-clojure-autoload)
 (swank-clojure-config
-(setq swank-clojure-jar-path \"$DIR/clojure/clojure.jar\")
+(setq swank-clojure-jar-path \"$DIR/lib/clojure.jar\")
 (setq swank-clojure-extra-classpaths
-(list \"$DIR/clojure-contrib/clojure-contrib.jar\"
+(list \"$DIR/lib/clojure-contrib.jar\"
 \"$DIR/swank-clojure/src/main/clojure\")))
 ;; slime
 (eval-after-load \"slime\"
