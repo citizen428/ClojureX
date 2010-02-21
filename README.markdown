@@ -1,11 +1,7 @@
-IMPORTANT
-=========
-Right now ClojureX is quite broken, since we are having trouble keeping up with upstream changes. We are aware of these problems and hopefully will be able to fix them in the not too distant future. If you are willing to volunteer some of your time to help with this, please drop me a message!
-
 ClojureX
 ========
 
-Easy set up for Clojure.
+Easy set up for Clojure on unixoid operating systems.
 
 **Supported Platforms**
 
@@ -17,17 +13,13 @@ Easy set up for Clojure.
 Set Up Instructions
 -------------------
 
-    $ git clone git://github.com/citizen428/ClojureX.git clojure
-    $ cd clojure
+    $ git clone git://github.com/citizen428/ClojureX.git 
+    $ cd ClojureX
 
-Grab all packages (clojure, clojure-contrib, jline and TextMate/Emacs support):
+Grab emacs support packages (optional):
 
     $ git submodule init
     $ git submodule update
-
-Build the packages with [ant][]:
-
-    $ ant
 
 If you want to build the JAR for swank-clojure for use in your own projects, you can do it like this:
 
@@ -36,7 +28,7 @@ If you want to build the JAR for swank-clojure for use in your own projects, you
 
 To create a symlink for the `clj` script in `/usr/local/bin` you can run the following command:
 
-    $ ./create_symlink
+    $ bin/create_symlink
 
 If you prefer to create the link somewhere else, you can do it manually like this:
 
@@ -44,11 +36,7 @@ If you prefer to create the link somewhere else, you can do it manually like thi
 
 Note: The `clj` script expects `$JAVA_HOME` in its environment. If `$JAVA_HOME` is not set, it will attempt to determine it for you. If for some reason you cannot provide `$JAVA_HOME`, you can set the `$JAVA` variable at the top of the `clj` script.
 
-To setup support for TextMate, run the following command which creates a symlink to the bundle in `~/Library/Application\ Support/TextMate/Bundles/`:
-
-    $ ./configure_textmate
-
-If you prefer Emacs for Clojure development the following command will add the necessary configuration for clojure-mode, slime and swank-clojure to your `~/.emacs`:
+If you checked out the relevant Emacs packages, the following command will add the necessary configuration for clojure-mode, slime and swank-clojure to your `~/.emacs`:
 
     $ ./configure_emacs
 
@@ -136,7 +124,7 @@ You can also list jars one per line in the .clojure file, like so:
 Staying up to date
 ------------------
 
-Once you have a local checkout of ClojureX, it's easy to keep your Clojure installation up to date:
+Once you have a local checkout of ClojureX, it's easy to keep the provided submodules up to date:
 
     $ cd clojure
     $ cd <submodule you want to update>
@@ -145,10 +133,6 @@ Once you have a local checkout of ClojureX, it's easy to keep your Clojure insta
 To update the source for all submodules at the same time, you can issue the following command:
 
     $ ./update_all
-
-If there were any updates to clojure, clojure-contrib or jline you will have to rebuild them like this:
-
-    $ ant
 
 Todo
 ----
@@ -170,4 +154,3 @@ Acknowledgements
 * [Tim Riddel](http://riddell.us/blog/) from whom I stole the contents of the .emacs file
 
 [shebang]:  http://en.wikipedia.org/wiki/Shebang_(Unix)
-[ant]:      http://ant.apache.org/
