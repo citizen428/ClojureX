@@ -249,9 +249,9 @@ jline )
     JAVA_OPTS="$JAVA_OPTS -Djline.terminal=jline.UnixTerminal"
   fi
 
-  eval java $JAVA_OPTS -cp "$CP" jline.ConsoleRunner clojure.main $INIT_OPTS $MAIN_OPTS
+  eval java $JAVA_OPTS -cp '$CP' jline.ConsoleRunner clojure.main $INIT_OPTS $MAIN_OPTS
   ;;
 *)
-  eval java $JAVA_OPTS -cp "$CP" clojure.main $INIT_OPTS $MAIN_OPTS
+  eval java $JAVA_OPTS -cp '$CP' clojure.main $INIT_OPTS $MAIN_OPTS
   ;;
 esac
