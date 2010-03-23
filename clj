@@ -4,6 +4,9 @@
 #
 # Original version by Mark Reid <http://mark.reid.name>
 # CREATED: 2009-03-29
+# Enhanced and updated by Carl Leiby, Michael Kohl, Dave Barker, 
+# Paul Rosania and Scott Haug
+
 JAVA=
 XDEBUG=-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=
 PRG_NAME=`basename $0`
