@@ -14,7 +14,7 @@ USAGE="Usage: $PRG_NAME [java-opt*] [init-opt*] [main-opt] [arg*]"
 
 # determine if $1 is an available program (eschew 'which', as it's unreliable)
 avail() {
-  type -P $1 $>/dev/null
+  type -P $1 &>/dev/null
 }
 
 # send the stock usage text to stderr
@@ -68,7 +68,7 @@ PRG="$0"
 while [ -h "$PRG" ]; do
   # if readlink is availble, use it; it is less fragile than relying on `ls` output
   if avail readlink; then
-    PRG=`readlink "$PRG"`
+    PRG=`readlink -f "$PRG"`
   else
     ls=`ls -ld "$PRG"`
     link=`expr "$ls" : '.*-> \(.*\)$'`
