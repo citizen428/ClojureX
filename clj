@@ -68,7 +68,7 @@ PRG="$0"
 while [ -h "$PRG" ]; do
   # if readlink is availble, use it; it is less fragile than relying on `ls` output
   if avail readlink; then
-    PRG=`readlink -f "$PRG"`
+    PRG=`readlink "$PRG"`
   else
     ls=`ls -ld "$PRG"`
     link=`expr "$ls" : '.*-> \(.*\)$'`
