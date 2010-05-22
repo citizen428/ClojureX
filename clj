@@ -116,6 +116,7 @@ if [ -z "$JAVA" ] || [ ! -f "$JAVA" ]; then # Couldn't find java
   error "Could not find Java. Check \$JAVA_HOME or set \$JAVA in this script."
 fi
 
+HELP=""
 JAVA_VM=""
 JAVA_OPTS=""
 INIT_OPTS=""
@@ -129,7 +130,8 @@ while [ $# -gt 0 ] ; do
   else
     case "$1" in
     -h|--help|-\?)
-      help
+      # postpone calling the help function until after we've had a chance to cygwinify CP
+      HELP=true
       ;;
     -cp|-classpath)
       # make sure there's a second argument
@@ -231,6 +233,10 @@ if $cygwin; then
   CP=`cygpath -wp "$CP"`
 fi
 
+if [ -n "$HELP" ]; then
+  help
+fi
+
 case $REPL in
 rlwrap )
   # used by rlwrap to determine which characters determine a 'word'
@@ -242,7 +248,7 @@ rlwrap )
     CLJ_COMP="$CLJ_DIR/clojure-completions"
   fi
 
-  eval rlwrap --remember -c -b "$(printf "%q" "$BREAK_CHARS")" -f "$CLJ_COMP" java $JAVA_OPTS -cp "$CP" clojure.main $INIT_OPTS $MAIN_OPTS
+  eval rlwrap --remember -c -b "$(printf "%q" "$BREAK_CHARS")" -f "$CLJ_COMP" java $JAVA_OPTS -cp '"$CP"' clojure.main $INIT_OPTS $MAIN_OPTS
   ;;
 jline )
   # Make jline and Cygwin cooperate with each other
@@ -252,9 +258,9 @@ jline )
     JAVA_OPTS="$JAVA_OPTS -Djline.terminal=jline.UnixTerminal"
   fi
 
-  eval java $JAVA_OPTS -cp '$CP' jline.ConsoleRunner clojure.main $INIT_OPTS $MAIN_OPTS
+  eval java $JAVA_OPTS -cp '"$CP"' jline.ConsoleRunner clojure.main $INIT_OPTS $MAIN_OPTS
   ;;
 *)
-  eval java $JAVA_OPTS -cp '$CP' clojure.main $INIT_OPTS $MAIN_OPTS
+  eval java $JAVA_OPTS -cp '"$CP"' clojure.main $INIT_OPTS $MAIN_OPTS
   ;;
 esac
