@@ -1,5 +1,7 @@
-ClojureX
-========
+DISCONTINUED!
+=======
+
+Please not that ClojureX is now discontinued. There are enough viable alternatives like David Edgar Liebke's [clj][http://github.com/liebke/clj] by now, so I don't see the need for this project anymore. If you do however, feel free to fork away :-)
 
 Easy set up for Clojure on unixoid operating systems.
 
