@@ -116,7 +116,7 @@ You can also list jars one per line in the .clojure file, like so:
 Todo
 ----
 
-* Add scripts to work with Clojure projects after installation
+* <del>Add scripts to work with Clojure projects after installation</del> - Taken care of by [Leiningen](http://github.com/technomancy/leiningen/blob/master/README.md)
 
 Acknowledgements
 ----------------

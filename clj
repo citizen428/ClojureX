@@ -4,6 +4,9 @@
 #
 # Original version by Mark Reid <http://mark.reid.name>
 # CREATED: 2009-03-29
+# Enhanced and updated by Carl Leiby, Michael Kohl, Dave Barker, 
+# Paul Rosania and Scott Haug
+
 JAVA=
 XDEBUG=-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=
 PRG_NAME=`basename $0`
@@ -11,7 +14,7 @@ USAGE="Usage: $PRG_NAME [java-opt*] [init-opt*] [main-opt] [arg*]"
 
 # determine if $1 is an available program (eschew 'which', as it's unreliable)
 avail() {
-  type -P $1 $>/dev/null
+  type -P $1 &>/dev/null
 }
 
 # send the stock usage text to stderr
@@ -249,9 +252,9 @@ jline )
     JAVA_OPTS="$JAVA_OPTS -Djline.terminal=jline.UnixTerminal"
   fi
 
-  eval java $JAVA_OPTS -cp "$CP" jline.ConsoleRunner clojure.main $INIT_OPTS $MAIN_OPTS
+  eval java $JAVA_OPTS -cp '$CP' jline.ConsoleRunner clojure.main $INIT_OPTS $MAIN_OPTS
   ;;
 *)
-  eval java $JAVA_OPTS -cp "$CP" clojure.main $INIT_OPTS $MAIN_OPTS
+  eval java $JAVA_OPTS -cp '$CP' clojure.main $INIT_OPTS $MAIN_OPTS
   ;;
 esac
