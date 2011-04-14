@@ -1,20 +1,19 @@
-DISCONTINUED!
-=======
-
-Please not that ClojureX is now discontinued. There are enough viable alternatives like David Edgar Liebke's [clj](http://github.com/liebke/clj) by now, so I don't see the need for this project anymore. If you do however, feel free to fork away :-)
+ClojureX
+==========
 
 Easy set up for Clojure on unixoid operating systems.
 
-**Supported Platforms**
+**Tested Platforms**
 
 - Mac OS X 10.5+
-- OpenSolaris
-- Linux (tested on Ubuntu 9.10)
+- OpenSolaris 
+- Linux 
 - Windows (Cygwin)
 
 **Note**
 
-For a while ClojureX tried to be everything for all people: it downloaded clojure, clojure-contrib and support packages for various editors, compiled and configured them. I now decided to give up on this one-size-fits-all approach and instead focus on always providing the latest stable versions of clojure and clojure-contrib as well as a full-featured "clj" script. 
+I only test on MacOS 10.6 and Linux (Debian Squeeze) myself, since I
+currently don't have an OpenSolaris machine. 
 
 Set Up Instructions
 -------------------
