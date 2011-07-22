@@ -6,8 +6,8 @@ Easy set up for Clojure on unixoid operating systems.
 **Tested Platforms**
 
 - Mac OS X 10.5+
-- OpenSolaris 
-- Linux 
+- OpenSolaris
+- Linux
 - Windows (Cygwin)
 
 **Note**
@@ -20,7 +20,7 @@ on user feedback.
 Set Up Instructions
 -------------------
 
-    $ git clone git://github.com/citizen428/ClojureX.git 
+    $ git clone git://github.com/citizen428/ClojureX.git
     $ cd ClojureX
 
 To create a symlink for the `clj` script in `/usr/local/bin` you can
@@ -147,6 +147,8 @@ Todo
 
 Acknowledgements
 ----------------
+
+* [Steven Knight](https://github.com/skk) for IBM SDK for Linux support
 
 * [Scott Haug](http://github.com/shaug) for lots of new features for the clj script
 
