@@ -105,7 +105,13 @@ if [ -z "$JAVA" ]; then
     if $cygwin; then
       JAVA_HOME=`cygpath "$JAVA_HOME"`
     fi
-    JAVA="$JAVA_HOME/bin/java"
+
+    if [ -e "$JAVA_HOME/jre/bin/java" ]; then
+      JAVA="$JAVA_HOME/jre/bin/java"
+    else
+      JAVA="$JAVA_HOME/bin/java"
+    fi 
+
   else
     # last ditch -- look for java on the path
     JAVA=`type -P java`
